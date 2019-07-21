@@ -927,17 +927,17 @@ A_chord_templates_aug = np.array([A_chord_1_4_aug, A_chord_2_5_aug, A_chord_3_6_
 A_fret_max = np.zeros((11, 6))
 #for i in range(12):
 #   A_fret_max = np.append(A_fret_max, [[np.argmax(A_chord_templates[i]+1, axis=1)]], axis=0)
-A_frets_1_4_location = np.argmax(A_chord_1_4_aug, axis=1) # REMOVE "AUG" TO GO BACK TO THE OLD WAY!
-A_frets_2_5_location = np.argmax(A_chord_2_5_aug, axis=1)#+1
-A_frets_3_6_location = np.argmax(A_chord_3_6_aug, axis=1)#+2
-A_frets_4_7_location = np.argmax(A_chord_4_7_aug, axis=1)#+3
-A_frets_5_8_location = np.argmax(A_chord_5_8_aug, axis=1)#+4
-A_frets_6_9_location = np.argmax(A_chord_6_9_aug, axis=1)#+5
-A_frets_7_10_location = np.argmax(A_chord_7_10_aug, axis=1)#+6
-A_frets_8_11_location = np.argmax(A_chord_8_11_aug, axis=1)#+7
-A_frets_9_12_location = np.argmax(A_chord_9_12_aug, axis=1)#+8
-A_frets_10_13_location = np.argmax(A_chord_10_13_aug, axis=1)#+9
-A_frets_11_14_location = np.argmax(A_chord_11_14_aug, axis=1)#+10
+A_frets_1_4_location = np.argmax(A_chord_1_4, axis=1) # REMOVE "AUG" TO GO BACK TO THE OLD WAY!
+A_frets_2_5_location = np.argmax(A_chord_2_5, axis=1)#+1
+A_frets_3_6_location = np.argmax(A_chord_3_6, axis=1)#+2
+A_frets_4_7_location = np.argmax(A_chord_4_7, axis=1)#+3
+A_frets_5_8_location = np.argmax(A_chord_5_8, axis=1)#+4
+A_frets_6_9_location = np.argmax(A_chord_6_9, axis=1)#+5
+A_frets_7_10_location = np.argmax(A_chord_7_10, axis=1)#+6
+A_frets_8_11_location = np.argmax(A_chord_8_11, axis=1)#+7
+A_frets_9_12_location = np.argmax(A_chord_9_12, axis=1)#+8
+A_frets_10_13_location = np.argmax(A_chord_10_13, axis=1)#+9
+A_frets_11_14_location = np.argmax(A_chord_11_14, axis=1)#+10
 
 A_fret_max = np.append(A_fret_max, [A_frets_1_4_location,A_frets_2_5_location,A_frets_3_6_location, A_frets_4_7_location,A_frets_5_8_location,A_frets_6_9_location,A_frets_7_10_location,A_frets_8_11_location, A_frets_9_12_location,A_frets_10_13_location,A_frets_11_14_location], axis=0)
 
@@ -957,7 +957,7 @@ print(A_frets_location)
 A_largest_corr = np.zeros((11, 6))
 for i in range(11):
     for j in range(6): # CHANGE BACK TO "6" TO GO BACK TO THE OLD WAY!
-        A_largest_corr[i][j] = A_chord_templates_aug[i][j][A_fret_max[i][j]]
+        A_largest_corr[i][j] = A_chord_templates[i][j][A_fret_max[i][j]]
 
 A_scores = np.zeros((11,1))
 for i in range(11):
