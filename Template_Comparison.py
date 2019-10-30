@@ -915,28 +915,22 @@ for i in range(11):
     templates[i] = chord_corr_A_matrix[0:6, i:k]
     k=k+1
 
+A_frets_location = np.zeros((11, 6))
 A_fret_max = np.zeros((11, 6))
 for i in range(11):
     A_fret_max = np.append(A_fret_max, [np.argmax(templates[i], axis = 1)], axis=0)
+    A_frets_location = np.append(A_frets_location, [np.argmax(templates[i], axis = 1) + i], axis=0)
 A_fret_max = A_fret_max[11:22, 0:6].astype(int)
-
-A_frets_location = np.zeros((11, 6))
-for i in range(11):
-    temp = A_fret_max[i]+i
-    A_frets_location = np.append(A_frets_location,[temp],axis=0)
-
-A_frets_location = A_frets_location[11:22, 0:6]
+A_frets_location = A_frets_location[11:22, 0:6].astype(int)
 
 A_largest_corr = np.zeros((11, 6))
 for i in range(11):
     for j in range(6):
         A_largest_corr[i][j] = templates[i][j][A_fret_max[i][j]]
 
-A_scores = np.zeros((11,1))
-for i in range(11):
-    A_scores[i] = np.sum(A_largest_corr[i],axis=0)
+A_scores = np.sum(A_largest_corr,axis=1).reshape(11,1)
 
-A_chord_final = np.append(A_fret_max,A_scores,axis=1)
+A_chord_final = np.append(A_frets_location,A_scores,axis=1)
 
 # 'x' out strings that were not played in the chord
 chord_result = np.zeros((0,6))
