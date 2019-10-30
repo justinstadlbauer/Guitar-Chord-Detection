@@ -40,6 +40,22 @@ fret_12_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Acou
 fret_13_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Acoustic 14 Fret Templates - Second Data Set/Fret_13_2.wav')
 fret_14_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Acoustic 14 Fret Templates - Second Data Set/Fret_14_2.wav')
 
+#fret_0_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Fender Strat 14 Fret Templates/Fret_0_Fender.wav')
+#fret_1_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Fender Strat 14 Fret Templates/Fret_0_Fender.wav')
+#fret_2_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Fender Strat 14 Fret Templates/Fret_0_Fender.wav')
+#fret_3_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Fender Strat 14 Fret Templates/Fret_0_Fender.wav')
+#fret_4_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Fender Strat 14 Fret Templates/Fret_0_Fender.wav')
+#fret_5_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Fender Strat 14 Fret Templates/Fret_0_Fender.wav')
+#fret_6_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Fender Strat 14 Fret Templates/Fret_0_Fender.wav')
+#fret_7_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Fender Strat 14 Fret Templates/Fret_0_Fender.wav')
+#fret_8_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Fender Strat 14 Fret Templates/Fret_0_Fender.wav')
+#fret_9_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Fender Strat 14 Fret Templates/Fret_0_Fender.wav')
+#fret_10_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Fender Strat 14 Fret Templates/Fret_0_Fender.wav')
+#fret_11_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Fender Strat 14 Fret Templates/Fret_0_Fender.wav')
+#fret_12_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Fender Strat 14 Fret Templates/Fret_0_Fender.wav')
+#fret_13_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Fender Strat 14 Fret Templates/Fret_0_Fender.wav')
+#fret_14_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Fender Strat 14 Fret Templates/Fret_0_Fender.wav')
+
 hop_length = 512  
 n_fft = 2048 
 fmin = librosa.midi_to_hz(36)
@@ -863,22 +879,24 @@ print("\n")
 print(Em_largest_corr)
 
 ###############################################################################################################
-A, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Acoustic Mic Only 60 BPM/E_mic_only.wav')
+A, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Acoustic Mic Only 60 BPM/A_mic_only.wav')
+# A, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/E_A_D_Chord_Strum.wav') #, duration=3.0)
 
-print(A.shape)
+# print(A.shape)
 
 X_A = librosa.stft(A, n_fft=n_fft, hop_length=hop_length)
-#X_A = librosa.cqt(A, sr=sr, fmin=fmin, n_bins=72, hop_length=hop_length)
+# X_A = librosa.cqt(A, sr=sr, fmin=fmin, n_bins=72, hop_length=hop_length)
 S_A = librosa.amplitude_to_db(abs(X_A))
-plt.rcParams.update({'font.size': 8})
-plt.figure(figsize=(20, 4))
-librosa.display.specshow(S_A, sr=sr, x_axis='frames', y_axis='linear')
-plt.xticks(np.arange(0, 1895, step=50))
-plt.colorbar(format='%+2.0f dB')
-plt.ylim(0,2000)
-plt.show()
+# print(S_A.shape)
+# plt.rcParams.update({'font.size': 8})
+# plt.figure(figsize=(20, 4))
+# librosa.display.specshow(S_A, sr=sr, x_axis='frames', y_axis='linear')
+# plt.xticks(np.arange(0, 1895, step=100))
+# plt.colorbar(format='%+2.0f dB')
+# plt.ylim(0,2000)
+# plt.show()
 
-A_template = np.mean(S_A[:,1550:1600], axis=1)
+A_template = np.mean(S_A[:,1400:1600], axis=1)
 
 chord_corr_A = np.zeros((1,90))
 chord_corr_A_matrix = np.zeros((6,15))
@@ -886,64 +904,21 @@ chord_corr_A_matrix = np.zeros((6,15))
 k=0
 for i in range(6):
     for j in range(15):
-        print(np.corrcoef(A_template, template_2[i][j])[1,0])
+        # print(np.corrcoef(A_template, template_2[i][j])[1,0])
         chord_corr_A[0][k] = np.corrcoef(A_template, template_2[i][j])[1,0]
         chord_corr_A_matrix[i][j] = np.corrcoef(A_template, template_2[i][j])[1,0]
         k+=1
-       
-# A
-A_chord_1_4 = chord_corr_A_matrix[0:6, 0:5] # includes open string
-A_chord_2_5 = chord_corr_A_matrix[0:6, 1:6]
-A_chord_3_6 = chord_corr_A_matrix[0:6, 2:7]
-A_chord_4_7 = chord_corr_A_matrix[0:6, 3:8]
-A_chord_5_8 = chord_corr_A_matrix[0:6, 4:9]
-A_chord_6_9 = chord_corr_A_matrix[0:6, 5:10]
-A_chord_7_10 = chord_corr_A_matrix[0:6, 6:11]
-A_chord_8_11 = chord_corr_A_matrix[0:6, 7:12]
-A_chord_9_12 = chord_corr_A_matrix[0:6, 8:13]
-A_chord_10_13 = chord_corr_A_matrix[0:6, 9:14]
-A_chord_11_14 = chord_corr_A_matrix[0:6, 10:15]
 
-a = chord_corr_A_matrix[0:6, 0]
-b = a.reshape(-1,1)
-
-A_chord_1_4_aug = np.concatenate((b, A_chord_1_4), axis = 1)
-A_chord_2_5_aug = np.concatenate((b, A_chord_2_5), axis = 1)
-A_chord_3_6_aug = np.concatenate((b, A_chord_3_6), axis = 1)
-A_chord_4_7_aug = np.concatenate((b, A_chord_4_7), axis = 1)
-A_chord_5_8_aug = np.concatenate((b, A_chord_5_8), axis = 1)
-A_chord_6_9_aug = np.concatenate((b, A_chord_6_9), axis = 1)
-A_chord_7_10_aug = np.concatenate((b, A_chord_7_10), axis = 1)
-A_chord_8_11_aug = np.concatenate((b, A_chord_8_11), axis = 1)
-A_chord_9_12_aug = np.concatenate((b, A_chord_9_12), axis = 1)
-A_chord_10_13_aug = np.concatenate((b, A_chord_10_13), axis = 1)
-A_chord_11_14_aug = np.concatenate((b, A_chord_11_14), axis = 1)
-
-A_chord_templates = np.array([A_chord_1_4, A_chord_2_5, A_chord_3_6, A_chord_4_7, A_chord_5_8, A_chord_6_9, 
-                              A_chord_7_10, A_chord_8_11, A_chord_9_12, A_chord_10_13, A_chord_11_14])
-
-A_chord_templates_aug = np.array([A_chord_1_4_aug, A_chord_2_5_aug, A_chord_3_6_aug, A_chord_4_7_aug, A_chord_5_8_aug, A_chord_6_9_aug, A_chord_7_10_aug, A_chord_8_11_aug, A_chord_9_12_aug, A_chord_10_13_aug, A_chord_11_14_aug])
+templates = np.zeros((11,6,5))
+k = 5
+for i in range(11):
+    templates[i] = chord_corr_A_matrix[0:6, i:k]
+    k=k+1
 
 A_fret_max = np.zeros((11, 6))
-#for i in range(12):
-#   A_fret_max = np.append(A_fret_max, [[np.argmax(A_chord_templates[i]+1, axis=1)]], axis=0)
-A_frets_1_4_location = np.argmax(A_chord_1_4, axis=1) # REMOVE "AUG" TO GO BACK TO THE OLD WAY!
-A_frets_2_5_location = np.argmax(A_chord_2_5, axis=1)#+1
-A_frets_3_6_location = np.argmax(A_chord_3_6, axis=1)#+2
-A_frets_4_7_location = np.argmax(A_chord_4_7, axis=1)#+3
-A_frets_5_8_location = np.argmax(A_chord_5_8, axis=1)#+4
-A_frets_6_9_location = np.argmax(A_chord_6_9, axis=1)#+5
-A_frets_7_10_location = np.argmax(A_chord_7_10, axis=1)#+6
-A_frets_8_11_location = np.argmax(A_chord_8_11, axis=1)#+7
-A_frets_9_12_location = np.argmax(A_chord_9_12, axis=1)#+8
-A_frets_10_13_location = np.argmax(A_chord_10_13, axis=1)#+9
-A_frets_11_14_location = np.argmax(A_chord_11_14, axis=1)#+10
-
-A_fret_max = np.append(A_fret_max, [A_frets_1_4_location,A_frets_2_5_location,A_frets_3_6_location, A_frets_4_7_location,A_frets_5_8_location,A_frets_6_9_location,A_frets_7_10_location,A_frets_8_11_location, A_frets_9_12_location,A_frets_10_13_location,A_frets_11_14_location], axis=0)
-
-#print(np.argmax(A_chord_7_10, axis=1))
-A_fret_max = A_fret_max[11:22, 0:6]
-A_fret_max = A_fret_max.astype(int)
+for i in range(11):
+    A_fret_max = np.append(A_fret_max, [np.argmax(templates[i], axis = 1)], axis=0)
+A_fret_max = A_fret_max[11:22, 0:6].astype(int)
 
 A_frets_location = np.zeros((11, 6))
 for i in range(11):
@@ -952,24 +927,70 @@ for i in range(11):
 
 A_frets_location = A_frets_location[11:22, 0:6]
 
-print(A_frets_location)
-
 A_largest_corr = np.zeros((11, 6))
 for i in range(11):
-    for j in range(6): # CHANGE BACK TO "6" TO GO BACK TO THE OLD WAY!
-        A_largest_corr[i][j] = A_chord_templates[i][j][A_fret_max[i][j]]
+    for j in range(6):
+        A_largest_corr[i][j] = templates[i][j][A_fret_max[i][j]]
 
 A_scores = np.zeros((11,1))
 for i in range(11):
     A_scores[i] = np.sum(A_largest_corr[i],axis=0)
 
-A_chord_final = np.append(A_frets_location,A_scores,axis=1)
+A_chord_final = np.append(A_fret_max,A_scores,axis=1)
 
-print(A_chord_final)
+# 'x' out strings that were not played in the chord
+chord_result = np.zeros((0,6))
+chord_result = A_chord_final[np.argmax(A_chord_final[:,6]),:6].astype(int)
 
-import pandas as pd
-df = pd.DataFrame(A_chord_final)
-df.to_csv('D7_chord_final_aug.csv', index=False)
+cqt_bins = np.array([[4,9,14,19,23,28],     # Fret 0
+                     [5,10,15,20,24,29],    # Fret 1
+                     [6,11,16,21,25,30],    # Fret 2
+                     [7,12,17,22,26,31],    # Fret 3
+                     [8,13,18,23,27,32],    # Fret 4
+                     [9,14,19,24,28,33],    # Fret 5
+                     [10,15,20,25,29,34],   # Fret 6
+                     [11,16,21,26,30,35],   # Fret 7
+                     [12,17,22,27,31,36],   # Fret 8
+                     [13,18,23,28,32,37],   # Fret 9
+                     [14,19,24,29,33,38],   # Fret 10
+                     [15,20,25,30,34,39],   # Fret 11
+                     [16,21,26,31,35,40],   # Fret 12
+                     [17,22,27,32,36,41],   # Fret 13
+                     [18,23,28,33,37,42]])  # Fret 14
+
+cqt_values = np.zeros(6)
+for i in range(6):
+    cqt_values[i] = cqt_bins[chord_result[i],i]
+
+cqt_values = cqt_values.astype(int)
+
+X_cqt = librosa.cqt(A, sr=sr, fmin=fmin, n_bins=72, hop_length=hop_length)
+S_cqt = librosa.amplitude_to_db(abs(X_cqt))
+# plt.figure(figsize=(15, 5))
+# librosa.display.specshow(S_cqt, sr=sr, x_axis='frames', y_axis='cqt_note', fmin=fmin, cmap='coolwarm')
+# plt.xticks(np.arange(0, 1895, step=50))
+
+decibel_values = np.zeros(6)
+for i in range(6):
+    decibel_values[i] = np.mean(np.abs(S_cqt[cqt_values[i],1400:1600]))
+
+average_db = np.average(decibel_values, axis=0)
+std_db = np.std(decibel_values, axis=0)
+three_std_db = std_db*3
+
+tab_result = np.zeros(6).astype(str)
+
+for i in range(6):
+    if (decibel_values[i] < three_std_db):
+        tab_result[i] = chord_result[i]
+    else:
+        tab_result[i] = "x"
+
+print(tab_result)
+
+#import pandas as pd
+#df = pd.DataFrame(A_chord_final)
+#df.to_csv('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Acoustic Mic Only - Tremelo Effect/E7_Trem.csv', index=False)
 
 #print(A_largest_corr)
 #print(A_chord_1_4)
