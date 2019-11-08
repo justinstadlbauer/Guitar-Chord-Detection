@@ -1,12 +1,15 @@
 # Template Comparison
 
 # %matplotlib inline
+import timeit
 from scipy import signal
 import matplotlib.pyplot as plt
 import librosa.display
 import numpy as np
 import librosa
 import IPython.display as ipd
+
+start_templates = timeit.default_timer()
 
 fret_0_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Acoustic 14 Fret Templates - Second Data Set/Fret_0_2.wav')
 fret_1_2, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Acoustic 14 Fret Templates - Second Data Set/Fret_1_2.wav')
@@ -36,19 +39,29 @@ for i in range(15):
     X = librosa.stft(template_files[i], n_fft=n_fft, hop_length=hop_length)
     S = librosa.amplitude_to_db(abs(X))
 
-    template_2[0][i] = np.mean(S[:,25:50], axis=1)
-    template_2[1][i] = np.mean(S[:,200:225], axis=1)
-    template_2[2][i] = np.mean(S[:,375:400], axis=1)
-    template_2[3][i] = np.mean(S[:,550:575], axis=1)
-    template_2[4][i] = np.mean(S[:,725:750], axis=1)
-    template_2[5][i] = np.mean(S[:,900:925], axis=1)
+    onset_frames = librosa.onset.onset_detect(template_files[i], sr=sr, wait=3, pre_avg=1.5, post_avg=1.5, pre_max=3, post_max=3, delta = 0.22)
+    
+    k = 0
+    template_2[0][i] = np.mean(S[:,onset_frames[k]+10:onset_frames[k]+35], axis=1)
+    k = k+1
+    template_2[1][i] = np.mean(S[:,onset_frames[k]+10:onset_frames[k]+35], axis=1)
+    k = k+1
+    template_2[2][i] = np.mean(S[:,onset_frames[k]+10:onset_frames[k]+35], axis=1)
+    k = k+1
+    template_2[3][i] = np.mean(S[:,onset_frames[k]+10:onset_frames[k]+35], axis=1)
+    k = k+1
+    template_2[4][i] = np.mean(S[:,onset_frames[k]+10:onset_frames[k]+35], axis=1)
+    k = k+1
+    template_2[5][i] = np.mean(S[:,onset_frames[k]+10:onset_frames[k]+35], axis=1) 
+
+stop_templates = timeit.default_timer()
+print('Time: ', stop_templates - start_templates)
 
 ###############################################################################################################
 
-A, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Acoustic Mic Only 60 BPM/A_mic_only.wav')
-# A, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/E_A_D_Chord_Strum.wav') #, duration=3.0)
+start_algorithm = timeit.default_timer()
 
-# print(A.shape)
+A, sr = librosa.load('C:/Users/Justin Stadlbauer/Documents/RESEARCH/Acoustic Mic Only 60 BPM/Am_mic_only.wav')
 
 X_A = librosa.stft(A, n_fft=n_fft, hop_length=hop_length)
 # X_A = librosa.cqt(A, sr=sr, fmin=fmin, n_bins=72, hop_length=hop_length)
@@ -144,6 +157,9 @@ for i in range(6):
         tab_result[i] = "x"
 
 print(tab_result)
+
+stop_algorithm = timeit.default_timer()
+print('Time: ', stop_algorithm - start_algorithm)
 
 #import pandas as pd
 #df = pd.DataFrame(A_chord_final)
